@@ -17,11 +17,14 @@ categories:
 `Sneaky Throw` 利用Java8的类型推断机制，把检查异常转为非检查异常，绕过编译器
 
 Java8语言规范中的定义
-```
-A bound of the form “throws α” is purely informational: it directs resolution to optimize the instantiation of “α” so that, if possible, it is not a checked exception type. (…)
 
-Otherwise, if the bound set contains “throws αi”, and the proper upper bounds of “αi” are, at most, Exception, Throwable, and Object, then Ti = RuntimeException.
-```
+	A bound of the form “throws α” is purely informational:
+	it directs resolution to optimize the instantiation of “α” so that,if possible, 
+	it is not a checked exception type. (…)
+
+	Otherwise, if the bound set contains “throws αi”, and the proper upper bounds of “αi” are, 
+	at most, Exception, Throwable, and Object, then Ti = RuntimeException.
+
 
 大意是 如`<T extends Throwable>` 若T不能推断出一个具体的检查异常类型，则T会被推断为`RuntimeException`
 

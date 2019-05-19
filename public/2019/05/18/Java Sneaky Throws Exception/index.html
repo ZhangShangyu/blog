@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="学习·创造">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ww1.sinaimg.cn/mw690/006cgBSrly1g35nd2ujltj30m80dcmye.jpg">
-<meta property="og:updated_time" content="2019-05-18T11:16:39.442Z">
+<meta property="og:updated_time" content="2019-05-19T16:58:39.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java Sneaky Throws Exception">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/mw690/006cgBSrly1g35nd2ujltj30m80dcmye.jpg">
@@ -354,8 +354,14 @@
         <p><img src="http://ww1.sinaimg.cn/mw690/006cgBSrly1g35nd2ujltj30m80dcmye.jpg" alt=""></p>
 <a id="more"></a>
 <h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><p><code>Sneaky Throw</code> 允许抛出检查异常，但无需在方法签名上<code>throws</code>或<code>try catch</code>该检查异常<br>在JVM层面不管方法是否有throws都可以抛异常，不区分检查及非检异常，检查异常是编译器的约束<br><code>Sneaky Throw</code> 利用Java8的类型推断机制，把检查异常转为非检查异常，绕过编译器</p>
-<p>Java8语言规范中的定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A bound of the form “throws α” is purely informational: it directs resolution to optimize the instantiation of “α” so that, if possible, it is not a checked exception type. (…)</span><br><span class="line"></span><br><span class="line">Otherwise, if the bound set contains “throws αi”, and the proper upper bounds of “αi” are, at most, Exception, Throwable, and Object, then Ti = RuntimeException.</span><br></pre></td></tr></table></figure></p>
-<p>大意是 如<code>&lt;T extends Throwable&gt;</code> 若T不能推断出一个具体的检查异常类型，则T会被推断为<code>RuntimeException</code></p>
+<p>Java8语言规范中的定义</p>
+<pre><code>A bound of the form “throws α” is purely informational:
+it directs resolution to optimize the instantiation of “α” so that,if possible, 
+it is not a checked exception type. (…)
+
+Otherwise, if the bound set contains “throws αi”, and the proper upper bounds of “αi” are, 
+at most, Exception, Throwable, and Object, then Ti = RuntimeException.
+</code></pre><p>大意是 如<code>&lt;T extends Throwable&gt;</code> 若T不能推断出一个具体的检查异常类型，则T会被推断为<code>RuntimeException</code></p>
 <h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p><code>Sneaky Throw</code> 可以避免检查异常的<code>try catch</code>样板代码，可用于不能抛出异常的地方，如lambda表达式中或<code>Runnable</code>类似的接口</p>
 <h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
 <li><p>实现一个util方法，利用泛型类型推断，按java规范，E被推断为<code>RuntimeException</code>, 重新抛出异常</p>
